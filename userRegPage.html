@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration - National Healthcare Portal</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-4">User Registration</h1>
+    <form id="patient-registration-form">
+      <div class="form-group">
+        <label for="patient-name">Name:</label>
+        <input type="text" class="form-control" id="patient-name" required>
+      </div>
+      <div class="form-group">
+        <label for="patient-age">Age:</label>
+        <input type="number" class="form-control" id="patient-age" required>
+      </div>
+      <div class="form-group">
+        <label for="patient-gender">Gender:</label>
+        <select class="form-control" id="patient-gender" required>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="patient-address">Address:</label>
+        <textarea class="form-control" id="patient-address" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="patient-phone">Phone:</label>
+        <input type="tel" class="form-control" id="patient-phone" required>
+      </div>
+      <div class="form-group">
+        <label for="patient-email">Email:</label>
+        <input type="email" class="form-control" id="patient-email" required>
+      </div>
+      <div class="form-group">
+        <label for="patient-password">Password:</label>
+        <input type="password" class="form-control" id="patient-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div id="registration-response" class="mt-3"></div>
+  </div>
+
+  <script>
+    document.getElementById('patient-registration-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const patientName = document.getElementById('patient-name').value;
+      const patientAge = document.getElementById('patient-age').value;
+      const patientGender = document.getElementById('patient-gender').value;
+      const patientAddress = document.getElementById('patient-address').value;
+      const patientPhone = document.getElementById('patient-phone').value;
+      const patientEmail = document.getElementById('patient-email').value;
+      const patientPassword = document.getElementById('patient-password').value;
+
+      // Here, you can add code to send the form data to a backend server for processing
+      // or store it in a database.
+
+      document.getElementById('registration-response').innerHTML = `<div class="alert alert-success">Thank you for registering. Your account has been created successfully.</div>`;
+      this.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>National Healthcare Portal</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    header {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .jumbotron {
+      background: linear-gradient(to right, #007bff, #6f42c1);
+      color: white;
+      padding: 4rem 2rem;
+      border-radius: 0;
+      text-align: center;
+    }
+
+    .animated-image {
+      width: 100%;
+      max-width: 600px;
+      margin: 2rem auto;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .album {
+      padding: 2rem 0;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    footer a {
+      color: #007bff;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .filter-form {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="#">National Healthcare Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Hospitals</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Feedback</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Welcome to the National Healthcare Portal</h1>
+        <p class="lead text-muted">Find information about private hospitals, pricing, and more.</p>
+        <a href="#" class="btn btn-light my-2">Search Hospitals</a>
+      </div>
+    </section>
+
+    <img src="hospital-networking-animation.gif" alt="Hospital Networking Animation" class="animated-image">
+
+    <div class="container">
+      <div class="filter-form">
+        <input type="text" id="search-bar" class="form-control" placeholder="Search for hospitals..." onkeyup="filterHospitals()">
+      </div>
+    </div>
+
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <h2 class="mb-4">Featured Hospitals</h2>
+        <div class="row" id="hospital-list">
+          <!-- Hospital cards will be dynamically generated here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2 class="mb-4">Submit Your Feedback</h2>
+      <form id="feedback-form">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="feedback">Feedback:</label>
+          <textarea class="form-control" id="feedback" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+      </form>
+      <div id="feedback-response" class="mt-3"></div>
+    </div>
+  </main>
+
+  <footer class="text-muted py-5">
+    <div class="container">
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+      <p>&copy; 2023 National Healthcare Portal</p>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Sample data for hospitals
+    const hospitals = [
+      {
+        name: "Apollo Hospital",
+        image: "hospital1.jpg",
+        description: "A leading healthcare provider with advanced medical facilities.",
+        services: ["Emergency", "Cardiology", "Orthopedics"],
+        contact: "1800-123-4567"
+      },
+      {
+        name: "Fortis Healthcare",
+        image: "hospital2.jpg",
+        description: "Known for its high-quality healthcare services and patient care.",
+        services: ["Emergency", "Neurology", "Gynecology"],
+        contact: "1800-234-5678"
+      },
+      {
+        name: "Max Healthcare",
+        image: "hospital3.jpg",
+        description: "Provides comprehensive healthcare solutions across various specialties.",
+        services: ["Emergency", "Pediatrics", "Oncology"],
+        contact: "1800-345-6789"
+      }
+    ];
+
+    // Function to display hospitals
+    function displayHospitals() {
+      const hospitalList = document.getElementById('hospital-list');
+      hospitalList.innerHTML = ""; // Clear existing content
+      hospitals.forEach(hospital => {
+        const card = `
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="${hospital.image}" class="card-img-top" alt="${hospital.name}">
+              <div class="card-body">
+                <h5 class="card-title">${hospital.name}</h5>
+                <p class="card-text">${hospital.description}</p>
+                <p><strong>Contact:</strong> ${hospital.contact}</p>
+                <p><strong>Services:</strong> ${hospital.services.join(", ")}</p>
+                <button class="btn btn-primary" onclick="showDetails('${hospital.name}')">View Details</button>
+              </div>
+            </div>
+          </div>
+        `;
+        hospitalList.innerHTML += card;
+      });
+    }
+
+    // Function to filter hospitals by name
+    function filterHospitals() {
+      const searchValue = document.getElementById('search-bar').value.toLowerCase();
+      const filteredHospitals = hospitals.filter(hospital => hospital.name.toLowerCase().includes(searchValue));
+      const hospitalList = document.getElementById('hospital-list');
+      hospitalList.innerHTML = ""; // Clear existing content
+      filteredHospitals.forEach(hospital => {
+        const card = `
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="${hospital.image}" class="card-img-top" alt="${hospital.name}">
+              <div class="card-body">
+                <h5 class="card-title">${hospital.name}</h5>
+                <p class="card-text">${hospital.description}</p>
+                <p><strong>Contact:</strong> ${hospital.contact}</p>
+                <p><strong>Services:</strong> ${hospital.services.join(", ")}</p>
+                <button class="btn btn-primary" onclick="showDetails('${hospital.name}')">View Details</button>
+              </div>
+            </div>
+          </div>
+        `;
+        hospitalList.innerHTML += card;
+      });
+    }
+
+    // Function to handle feedback submission
+    document.getElementById('feedback-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const feedback = document.getElementById('feedback').value;
+      document.getElementById('feedback-response').innerHTML = `<div class="alert alert-success">Thank you, ${name}! Your feedback has been submitted.</div>`;
+      this.reset();
+    });
+
+    // Function to show hospital details (placeholder)
+    function showDetails(hospitalName) {
+      alert(`Details for ${hospitalName} will be shown here.`);
+    }
+
+    // Initialize the portal
+    displayHospitals();
+  </script>
+</body>
+</html>
